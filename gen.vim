@@ -1,11 +1,11 @@
 if !exists("s:load")
 	let s:load = 1
-	map<F12> :call Main("c") <CR>
-	map<F11> :call Main("cc") <CR>
-	map<F10> :call Main("cpp") <CR>
+	map<F5> :call Main("c") <CR>
+	map<F6> :call Main("cc") <CR>
+	map<F7> :call Main("cpp") <CR>
 endif
 
-"º¯ÊýÔ­ÐÍ
+"å‡½æ•°åŽŸåž‹
 function GenPrototype(...)
 	let s:str=getline(".")
 	let s:str = s:str . ";"
@@ -14,15 +14,15 @@ function GenPrototype(...)
 		execute "tabnew " . s:fname
 	endif
 	let s:old_page_idx=bufnr(bufname("%"))
-	let s:idx=bufnr(s:fname) "»ñÈ¡Ò³Ç©ºÅ
+	let s:idx=bufnr(s:fname) "èŽ·å–é¡µç­¾å·
 	execute "tabn " . s:idx
 	let s:type=match(s:str, "::")
-	if(s:type != -1) " ³ÉÔ±º¯Êý
+	if(s:type != -1) " æˆå‘˜å‡½æ•°
 		let s:cls_name = matchstr(s:str, '\S\+::')
-		let s:str = substitute(s:str, '.\(\S\+\)::', " ", "") " »ñÈ¡Ô­ÐÍ
+		let s:str = substitute(s:str, '.\(\S\+\)::', " ", "") " èŽ·å–åŽŸåž‹
 		let s:cls_name = substitute(s:cls_name, "::", "", "")
 		let s:cls_idx = search('^class\s\+' . s:cls_name, "b")
-		if(s:cls_idx > 0) " ÀàÒÑ¶¨Òå
+		if(s:cls_idx > 0) " ç±»å·²å®šä¹‰
 			let s:end_cls_line = search('};$', "b")
 			let s:num = search(s:str, "b")
 			if(s:num > s:cls_idx && s:num < s:end_cls_line)
@@ -35,7 +35,7 @@ function GenPrototype(...)
 				call append(s:cls_idx + 2, "public:")
 				call append(s:cls_idx + 3, "\t" . s:str)
 			endif
-		else " ÀàÎ´¶¨Òå
+		else " ç±»æœªå®šä¹‰
 			call append(line("$"), "")
 			let s:line = line("$") - 1
 			call append(s:line, "class " . s:cls_name)
@@ -45,22 +45,22 @@ function GenPrototype(...)
 			call append(line("$") - 1, "};")
 		endif
 	else
-		if(search('^\s\+' . s:str, "b") == 0)
-			let s:line = line("$") - 1 " ÒÔ·À×îºóÒ»ÐÐÊÇ#endif
-		endif
+"		if(search('^\s\+' . s:str, "b") == 0)
+"			let s:line = line("$") - 1 " ä»¥é˜²æœ€åŽä¸€è¡Œæ˜¯#endif
+"		endif
 	endif
 	execute "w"
 endfunction
 
-"º¯Êý¶¨Òå
+"å‡½æ•°å®šä¹‰
 function GenDefination(type)
-	let s:str = getline(".") "»ñÈ¡µ±Ç°ÐÐµÄÄÚÈÝ
+	let s:str = getline(".") "èŽ·å–å½“å‰è¡Œçš„å†…å®¹
 	let s:cur = winline()
-	let s:str = substitute(s:str, "virtual", "", "") " È¥µôvirtualÐÞÊÎ·û
-	let s:str = substitute(s:str, "inline", "", "") "È¥µôinlineÐÞÊÎ·û
-	let s:str = substitute(s:str, ";", "", "") "È¥µô;
-	let s:str = substitute(s:str, '^\s\+', "", "") "È¥µô¿Õ¸ñ
-	let s:ln = search("^class", "b") "»ñÈ¡ÀàÃû
+	let s:str = substitute(s:str, "virtual", "", "") " åŽ»æŽ‰virtualä¿®é¥°ç¬¦
+	let s:str = substitute(s:str, "inline", "", "") "åŽ»æŽ‰inlineä¿®é¥°ç¬¦
+	let s:str = substitute(s:str, ";", "", "") "åŽ»æŽ‰;
+	let s:str = substitute(s:str, '^\s\+', "", "") "åŽ»æŽ‰ç©ºæ ¼
+	let s:ln = search("^class", "b") "èŽ·å–ç±»å
 	let s:end_cls_line = search("};$", "W")
 	if(s:cur < s:end_cls_line)
 		"let s:cls_name = matchlist(getline(s:ln), 'class\s\+\(\S\+\)')[1]
@@ -78,15 +78,15 @@ function GenDefination(type)
 		execute "tabnew " . s:fname
 	endif
 	let s:old_page_idx=bufnr(bufname("%"))
-	let s:idx=bufnr(s:fname) "»ñÈ¡Ò³Ç©ºÅ
+	let s:idx=bufnr(s:fname) "èŽ·å–é¡µç­¾å·
 	execute "tabn " . s:idx
 	let s:type=match(s:str, "::")
-	if(s:type != -1) " ³ÉÔ±º¯Êý
+	if(s:type != -1) " æˆå‘˜å‡½æ•°
 		let s:cls_name = matchstr(s:str, '\S\+::')
-		let s:str = substitute(s:str, '.\(\S\+\)::', " ", "") " »ñÈ¡Ô­ÐÍ
+		let s:str = substitute(s:str, '.\(\S\+\)::', " ", "") " èŽ·å–åŽŸåž‹
 		let s:cls_name = substitute(s:cls_name, "::", "", "")
 		let s:cls_idx = search('^class\s\+' . s:cls_name, "b")
-		if(s:cls_idx > 0) " ÀàÒÑ¶¨Òå
+		if(s:cls_idx > 0) " ç±»å·²å®šä¹‰
 			let s:end_cls_line = search('};$', "b")
 			let s:num = search(s:str, "b")
 			if(s:num > s:cls_idx && s:num < s:end_cls_line)
@@ -99,7 +99,7 @@ function GenDefination(type)
 				call append(s:cls_idx + 2, "public:")
 				call append(s:cls_idx + 3, "\t" . s:str)
 			endif
-		else " ÀàÎ´¶¨Òå
+		else " ç±»æœªå®šä¹‰
 			call append(line("$"), "")
 			let s:line = line("$") - 1
 			call append(s:line, "class " . s:cls_name)
@@ -110,7 +110,7 @@ function GenDefination(type)
 		endif
 	else
 		if(search('^\s\+' . s:str, "b") == 0)
-			let s:line = line("$") - 1 " ÒÔ·À×îºóÒ»ÐÐÊÇ#endif
+			let s:line = line("$") - 1 " ä»¥é˜²æœ€åŽä¸€è¡Œæ˜¯#endif
 		endif
 	endif
 	execute "w"
