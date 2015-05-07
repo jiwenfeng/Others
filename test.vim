@@ -1,8 +1,8 @@
 if !exists("s:load")
 	let s:load = 1
-	map<F12> :call Main("c") <CR>
-	map<F11> :call Main("cc") <CR>
-	map<F10> :call Main("cpp") <CR>
+	map<F12> :call Gen("c") <CR>
+	map<F11> :call Gen("cc") <CR>
+	map<F10> :call Gen("cpp") <CR>
 endif
 
 "º¯ÊýÔ­ÐÍ
@@ -41,7 +41,7 @@ function GenDefination(type)
 
 endfunction
 
-function Main(type)
+function Gen(type)
 	let s:ext = fnamemodify(bufname("%"), ":e")
 	if(s:ext == "cc" || s:ext == "cpp" || s:ext == "c")
 		call GenPrototype()
