@@ -21,7 +21,7 @@ function! GenPrototype(...)
 		let s:cmp_str = substitute(s:str, '*', '\\*', "g")
 		let s:cls_name = substitute(s:cls_name, "::", "", "")
 		let s:cls_idx = search('^class\s\+' . s:cls_name, "b")
-		let s:cls_end_line = search('};$', "W") "class range
+		let s:cls_end_line = search('};$', "W")
 		if(s:cls_idx > 0)
 			let s:num = search('^\s*' . s:cmp_str, "b")
 			if(s:num > s:cls_idx && s:num < s:cls_end_line)
@@ -46,15 +46,14 @@ function! GenPrototype(...)
 		endif
 	else
 		let s:num = search('^\s*' . s:cmp_str, "b")
-	"	check if we search the member function
-	"	TODO
-	"	let s:cls_end_line = search('};$', "W") 
-	"	if(s:num != 0 && (s:num < s:cls_idx || s:num > s:cls_end_line))
-	"		return
-	"	endif
-	"	let s:line = line("$")
-	"	call append(s:line - 1, "")
-	"	call append(s:line - 1, s:str)
+		let s:cls_start = search('^class\s\+', "W")
+		let s:cls_end_line = search('};$', "W")
+		if(s:num != 0 && (s:num < s:cls_idx || s:num > s:cls_end_line))
+			return
+		endif;
+		let s:line = line("$")
+		call append(s:line - 1, "")
+		call append(s:line - 1, s:str)
 	endif
 	execute "w"
 endfunction
