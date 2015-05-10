@@ -1,9 +1,12 @@
-if !exists("s:load")
-	let s:load = 1
-	map<F5> :call Main("c") <CR>
-	map<F6> :call Main("cc") <CR>
-	map<F7> :call Main("cpp") <CR>
+if exists("g:load_gen")
+	finish
 endif
+
+let g:load_gen = 1
+
+map<F2> :call Main("c") <CR>
+map<F3> :call Main("cc") <CR>
+map<F4> :call Main("cpp) <CR>
 
 function! IsFunction(str)
 	return match(a:str, '(.*)') != -1
