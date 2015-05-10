@@ -6,7 +6,7 @@ let g:load_gen = 1
 
 map<F2> :call Main("c") <CR>
 map<F3> :call Main("cc") <CR>
-map<F4> :call Main("cpp) <CR>
+map<F4> :call Main("cpp") <CR>
 
 function! IsFunction(str)
 	return match(a:str, '(.*)') != -1
