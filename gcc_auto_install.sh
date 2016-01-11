@@ -17,8 +17,9 @@ DIR=dependence
 
 if [ ! -d $DIR ] ; then
 	mkdir $DIR
-	cd $DIR
 fi
+
+cd $DIR
 
 Install()
 {
