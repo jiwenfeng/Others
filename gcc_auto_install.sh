@@ -4,8 +4,8 @@
 # Run this from the top level of the gcc source tree.
 # Run this as root
 
-apt-get update
-apt-get install build-essential manpages-dev || exit 1
+#apt-get update
+#apt-get install build-essential manpages-dev || exit 1
 
 # Necessary to build GCC.
 M4=m4-1.4.17
@@ -26,13 +26,13 @@ Install()
 	echo "Now Install $2"
 	filename=${1##*/}
 	if [ ! -f $filename ] ; then
-		wget $1 || echo "Download $filename Failed"; exit 1
+		wget $1 ||  exit 1
 	fi
-	if [ ! -d $2 ]; then
+	if [ ! -d $2 ] ; then
 		tar xvf $filename || exit 1
 	fi
 	cd $2
-	./configure --prefix=/usr/local/ && make -j4 && make install || echo "Install $2 Failed";exit 1
+	./configure --prefix=/usr/local/ && make -j4 && make install || exit 1
 	echo "$2 Installed Finish"
 	cd ..
 }
@@ -42,15 +42,16 @@ if [ ! -f /usr/local/bin/m4 -a ! -f /usr/bin/m4 ] ; then
 	Install http://ftp.gnu.org/gnu/m4/$M4.tar.xz $M4
 fi
 
+# Install GMP
+if [ ! -f /usr/local/lib/libgmp.a -a ! -f /usr/lib/libgmp.a ] ; then
+	Install ftp://gcc.gnu.org/pub/gcc/infrastructure/$GMP.tar.bz2 $GMP
+fi
+
 # Install MPFR
 if [ ! -f /usr/local/lib/libmpfr.a -a ! -f /usr/lib/libmpfr.a ] ; then
 	Install ftp://gcc.gnu.org/pub/gcc/infrastructure/$MPFR.tar.bz2 $MPFR
 fi
 
-# Install GMP
-if [ ! -f /usr/local/lib/libgmp.a -a ! -f /usr/lib/libgmp.a ]; then
-	Install ftp://gcc.gnu.org/pub/gcc/infrastructure/$GMP.tar.bz2 $GMP
-fi
 
 # Install MPC
 if [ ! -f /usr/local/lib/libmpc.a -a ! -f /usr/lib/libmpc.a ] ; then
@@ -59,7 +60,9 @@ fi
 
 ldconfig
 
+cd ..
+
 echo "Now Install GCC"
-./configure --prefix=/usr/local/ --disable-multilib --enable-checking=release --enable-languages=c,c++ && make -j4 && make install && make clean|| exit 1
+./configure --prefix=/usr/local/ --disable-multilib --enable-checking=release --enable-languages=c,c++ && make -j4 && make install || exit 1
 rm -rf $DIR
 echo "All Installed Finish"
