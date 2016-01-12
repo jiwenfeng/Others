@@ -4,8 +4,8 @@
 # Run this from the top level of the gcc source tree.
 # Run this as root
 
-#apt-get update
-#apt-get install build-essential manpages-dev || exit 1
+apt-get update
+apt-get install build-essential manpages-dev || exit 1
 
 # Necessary to build GCC.
 M4=m4-1.4.17
