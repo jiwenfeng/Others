@@ -62,6 +62,8 @@ ldconfig
 
 cd ..
 
+export LD_LIBRARY_PAATH=$LD_LIBRARY_PAATH:/usr/local/lib/
+
 echo "Now Install GCC"
 ./configure --prefix=/usr/local/ --disable-multilib --enable-checking=release --enable-languages=c,c++ && make -j4 && make install || exit 1
 rm -rf $DIR
