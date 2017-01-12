@@ -1,5 +1,7 @@
 #!/bin/sh
 
+#利用valgrind的callgrind进行性能分析，并将最终的分析报告转换成png图片
+
 if [ "$1" = "" ] ; then
 	echo "Usage:./profile.sh file"
 	return
