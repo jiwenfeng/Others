@@ -1,6 +1,9 @@
 #!/bin/sh
 
-#利用valgrind的callgrind进行性能分析，并将最终的分析报告转换成png图片
+# 利用valgrind的callgrind进行性能分析，并将最终的分析报告转换成png图片
+# 使用方法 ./profile.sh ./exec
+# 需要安装valgrind和python
+
 
 if [ "$1" = "" ] ; then
 	echo "Usage:./profile.sh file"
