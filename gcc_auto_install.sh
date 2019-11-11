@@ -4,9 +4,10 @@
 # Run this from the top level of the gcc source tree.
 # Run this as root
 
-apt-get update || exit 1
-apt-get -y install build-essential manpages-dev || exit 1
+#apt-get update || exit 1
+#apt-get -y install build-essential manpages-dev || exit 1
 
+GCC=gcc-9.2.0
 # Necessary to build GCC.
 M4=m4-1.4.17
 MPFR=mpfr-2.4.2
@@ -14,6 +15,13 @@ GMP=gmp-4.3.2
 MPC=mpc-0.8.1
 
 DIR=dependence
+
+if [ ! -d $GCC.tar.gz ]; then
+	wget https://ftp.gnu.org/gnu/gcc/$GCC/$GCC.tar.gz
+	tar xvf $GCC.tar.gz
+fi
+
+cd $GCC.tar.gz
 
 if [ ! -d $DIR ] ; then
 	mkdir $DIR
@@ -62,7 +70,7 @@ ldconfig
 
 cd ..
 
-export LD_LIBRARY_PAATH=$LD_LIBRARY_PAATH:/usr/local/lib/
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib/
 
 echo "Now Install GCC"
 ./configure --prefix=/usr/local/ --disable-multilib --enable-checking=release --enable-languages=c,c++ && make -j4 && make install || exit 1
