@@ -82,3 +82,5 @@ if filereadable("/etc/vim/vimrc.local")
 endif
 
 set autochdir
+
+set tags=tags;
