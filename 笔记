@@ -1,0 +1,14 @@
+将git diff的工具替换成vimdiff
+1)添加脚本文件 .git_diff_wrapper 
+#!/bin/sh
+vimdiff "$2" "$5"
+function git_diff()
+{
+  git diff --no-ext-diff -w "$@" | vim -R -
+}
+
+2)修改.gitconfig
+[diff]
+  external=~/.git_diff_warpper
+[pager]
+  diff=
