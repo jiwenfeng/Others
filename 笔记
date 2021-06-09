@@ -12,3 +12,6 @@ function git_diff()
   external=~/.git_diff_warpper
 [pager]
   diff=
+
+
+3)cgi 切换到其他目录或者需要执行管理员命令，需要将SELinux关闭
