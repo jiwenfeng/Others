@@ -7,21 +7,21 @@
 #apt-get update || exit 1
 #apt-get -y install build-essential manpages-dev || exit 1
 
-GCC=gcc-9.2.0
+GCC=gcc-13.2.0
 # Necessary to build GCC.
 M4=m4-1.4.17
-MPFR=mpfr-2.4.2
-GMP=gmp-4.3.2
-MPC=mpc-0.8.1
+MPFR=mpfr-4.2.1
+GMP=gmp-6.3.0
+MPC=mpc-1.3.1
 
 DIR=dependence
 
-if [ ! -d $GCC.tar.gz ]; then
+if [ ! -f $GCC.tar.gz ]; then
 	wget https://ftp.gnu.org/gnu/gcc/$GCC/$GCC.tar.gz
 	tar xvf $GCC.tar.gz
 fi
 
-cd $GCC.tar.gz
+cd $GCC
 
 if [ ! -d $DIR ] ; then
 	mkdir $DIR
@@ -34,13 +34,13 @@ Install()
 	echo "Now Install $2"
 	filename=${1##*/}
 	if [ ! -f $filename ] ; then
-		wget $1 ||  exit 1
+		wget $1 --no-check-certificate ||  exit 1
 	fi
 	if [ ! -d $2 ] ; then
 		tar xvf $filename || exit 1
 	fi
 	cd $2
-	./configure --prefix=/usr/local/ && make -j4 && make install || exit 1
+	./configure --prefix=/usr/local/ && make && make install || exit 1
 	echo "$2 Installed Finish"
 	cd ..
 }
@@ -52,18 +52,18 @@ fi
 
 # Install GMP
 if [ ! -f /usr/local/lib/libgmp.a -a ! -f /usr/lib/libgmp.a ] ; then
-	Install ftp://gcc.gnu.org/pub/gcc/infrastructure/$GMP.tar.bz2 $GMP
+	Install https://ftp.gnu.org/gnu/gmp/$GMP.tar.bz2 $GMP
 fi
 
 # Install MPFR
 if [ ! -f /usr/local/lib/libmpfr.a -a ! -f /usr/lib/libmpfr.a ] ; then
-	Install ftp://gcc.gnu.org/pub/gcc/infrastructure/$MPFR.tar.bz2 $MPFR
+Install https://ftp.gnu.org/gnu/mpfr/$MPFR.tar.bz2 $MPFR
 fi
 
 
 # Install MPC
 if [ ! -f /usr/local/lib/libmpc.a -a ! -f /usr/lib/libmpc.a ] ; then
-	Install ftp://gcc.gnu.org/pub/gcc/infrastructure/$MPC.tar.gz $MPC
+	Install https://ftp.gnu.org/gnu/mpc/$MPC.tar.gz $MPC
 fi
 
 ldconfig
@@ -72,7 +72,9 @@ cd ..
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib/
 
+echo `pwd `
 echo "Now Install GCC"
-./configure --prefix=/usr/local/ --disable-multilib --enable-checking=release --enable-languages=c,c++ && make -j4 && make install || exit 1
+./configure --with-gmp --with-mpfr --with-mpc --prefix=/usr/local/ --disable-multilib --enable-checking=release --enable-languages=c,c++ && make -j2 && make install || exit 1
 rm -rf $DIR
+
 echo "All Installed Finish"
